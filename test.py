@@ -1,0 +1,52 @@
+finalPuzzle = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+
+puzzle = [1,3,4,15,2,16,5,12,7,6,11,14,8,9,10,13]
+# puzzle = [1,2,3,4,5,6,16,8,9,10,7,11,13,14,15,12]
+
+def kurang_i(i, puzzle):
+    i_position = puzzle.index(i)
+    sum = 0
+    for pos in range(i_position + 1, len(puzzle)):
+        if(puzzle[pos] < i):
+            sum += 1
+    return sum
+
+def kurang_i_table(puzzle):
+    tempArr = [0 for i in range(len(puzzle))]
+    for i in range(len(puzzle)):
+        kurangIResult = kurang_i(puzzle[i], puzzle)
+        tempArr[puzzle[i]-1] = kurangIResult
+    return tempArr
+
+def sumOf_kurang_i(table):
+    sum = 0
+    for i in range(len(table)):
+        sum += table[i]
+    return sum
+
+def possibleToSolve(puzzle, kurang_i_sum):
+    blankPos = puzzle.index(16) + 1
+    tempVal = kurang_i_sum
+    tempArr = [2,4,5,7,10,12,13,15]
+    if (blankPos in tempArr):
+        tempVal += 1
+    return (tempVal % 2 == 0)
+
+def printKurangITable(array):
+    print("Kurang(i) Table")
+    for i in range(len(array)):
+        print(f"Kurang({i+1}) = {array[i]}")
+    print()
+
+kurangI_table = kurang_i_table(puzzle)
+kurang_i_sum = sumOf_kurang_i(kurangI_table)
+
+print(f"Sum of Kurang(i): {kurang_i_sum}\n")
+printKurangITable(kurangI_table)
+
+isSolved = possibleToSolve(puzzle, kurang_i_sum)
+
+if(isSolved):
+    print("Bisa di solved!")
+else:
+    print("Gabisa di solved!")
