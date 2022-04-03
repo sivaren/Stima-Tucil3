@@ -29,6 +29,20 @@ def copyMatrix(matrix):
     
     return temp
 
+def isMatrixGoal(matrix):
+    finalMatrix =  [
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,10,11,12],
+        [13,14,15,16]
+    ]
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if (matrix[i][j] != finalMatrix[i][j]):
+                return False
+
+    return True
+
 def getEmptyPosition(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
@@ -57,6 +71,7 @@ def availableMove(node):
 def move(node, direction, countID):
     newNode = {}
     newNode["id"] = countID
+    newNode["idBefore"] = node["id"]
     newNode["matrix"] = []
     newNode["fi"] = node["fi"] + 1
     newNode["gi"] = 0
@@ -105,3 +120,20 @@ def sortSimpulHidup(simpulHidup):
         tempSimpulHidup[i] = tempVal
 
     return tempSimpulHidup
+
+def findNode(simpulChecked, nodeID):
+    for node in simpulChecked:
+        if node["id"] == nodeID:
+            return node
+
+def getFinalPath(simpulChecked, finalNodeID):
+    node = findNode(simpulChecked, finalNodeID)
+    temp = []
+    temp.append(node)
+
+    while(node["idBefore"] != 0):
+        node = findNode(simpulChecked, node["idBefore"])
+        temp.append(node)
+    temp.reverse()
+
+    return temp

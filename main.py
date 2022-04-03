@@ -53,18 +53,13 @@ else:
 #         # 5,1,3,4,9,2,7,8,16,6,15,11,13,10,14,12
 #     ]
 
-finalPuzzleMatrix = [
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,10,11,12],
-        [13,14,15,16]
-    ]
-
 timeTakes = 0.0
+
 startTime = time.time()
 kurangI_table = kurang_i_table(initialPuzzleArray)
 kurangI_sum =  sumOf_kurang_i(kurangI_table)
 kurangI_plus_x = kurangI_plusX(initialPuzzleArray, kurangI_sum)
+
 timeTakes += (time.time() - startTime)
 
 print("=== INITIAL MATRIX PUZZLE ===")
@@ -80,6 +75,7 @@ if (kurangI_plus_x % 2 == 0):
     startTime = time.time()
     initialPuzzle = {
         "id"        : 1,
+        "idBefore"  : 0,
         "matrix"    : transposeToMatrix(initialPuzzleArray),
         "fi"        : 0,
         "gi"        : 0,
@@ -88,15 +84,17 @@ if (kurangI_plus_x % 2 == 0):
     } 
     simpulE = {}
     simpulChecked = []
+    pathSimpulFinal = []
     simpulH = [initialPuzzle]
-    found = False
+    # found = False
     
-    while(len(simpulH) != 0 and not found):
+    while(len(simpulH) != 0):
         simpulE = simpulH.pop(0)
         simpulChecked.append(simpulE)
-        if(simpulE["matrix"] == finalPuzzleMatrix):
+        if(isMatrixGoal(simpulE["matrix"])):
             simpulE["cost"] = simpulE["fi"]
-            found = True
+            pathSimpulFinal = getFinalPath(simpulChecked, simpulE["id"])
+            # found = True
             timeTakes += (time.time() - startTime)
             break
         risedNode = riseNode(simpulE)
@@ -105,7 +103,7 @@ if (kurangI_plus_x % 2 == 0):
         simpulH = sortSimpulHidup(simpulH)
 
     print("=== PATH SIMPUL FINAL ===")
-    printPathSimpulFinal(simpulChecked)
+    printPathSimpulFinal(pathSimpulFinal)
 
     print("================== WAKTU EKSEKUSI PROGRAM ==================")
     print(f"> Program berlangsung selama {format(timeTakes, '.23f')} detik\n")

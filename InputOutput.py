@@ -60,3 +60,5 @@ def printMatrix(matrix):
 def printPathSimpulFinal(pathSimpulFinal):
     for i in range(len(pathSimpulFinal)):
         printMatrix(pathSimpulFinal[i]["matrix"])
+    for i in range(len(pathSimpulFinal)):
+        print(pathSimpulFinal[i])
