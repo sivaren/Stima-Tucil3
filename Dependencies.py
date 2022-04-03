@@ -1,3 +1,4 @@
+# fungsi untuk transpose dari array ke matrix
 def transposeToMatrix(array):
     matrix = []
     baris = []
@@ -9,6 +10,7 @@ def transposeToMatrix(array):
 
     return matrix
 
+# fungsi untuk transpose dari matrix ke array
 def transposeToArray(matrix):
     array = []
     for row in matrix:
@@ -17,6 +19,7 @@ def transposeToArray(matrix):
 
     return array
 
+# fungsi untuk meng-copy matrix
 def copyMatrix(matrix):
     temp = []
     baris = []
@@ -29,6 +32,8 @@ def copyMatrix(matrix):
     
     return temp
 
+# fungsi untuk mengecek apakah suatu matrix
+# sudah sama dengan Goal state
 def isMatrixGoal(matrix):
     finalMatrix =  [
         [1,2,3,4],
@@ -43,13 +48,16 @@ def isMatrixGoal(matrix):
 
     return True
 
+# fungsi untuk mendapatkan koordinat angka 16 (kotak kosong)
+# dari suatu matrix
 def getEmptyPosition(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             if (matrix[i][j] == 16):
                 return [i, j]
 
-# return array yg berisi direction move yang dapat di lakukan
+# fungsi untuk mendapatkan arah gerakan 
+# dari kotak kosong yang mungkin dilakukan
 def availableMove(node):
     emptyPosition = getEmptyPosition(node["matrix"])
     availMove = []
@@ -68,6 +76,8 @@ def availableMove(node):
     
     return availMove
 
+# fungsi untuk mendapatkan state matrix yang 
+# telah melakukan gerakan tertentu dari state matrix sebelumnya
 def move(node, direction, countID):
     newNode = {}
     newNode["id"] = countID
@@ -99,6 +109,7 @@ def move(node, direction, countID):
     
     return newNode
 
+# fungsi untuk menghitung cost g(i) dari suatu state
 def calculate_gi(matrix):
     count = 0
     for i in range(len(matrix)):
@@ -108,6 +119,7 @@ def calculate_gi(matrix):
 
     return count
 
+# fungsi untuk mengurutkan collection dari simpul hidup
 def sortSimpulHidup(simpulHidup):
     tempSimpulHidup = simpulHidup
     for i in range(0, len(tempSimpulHidup)-1):
@@ -121,11 +133,15 @@ def sortSimpulHidup(simpulHidup):
 
     return tempSimpulHidup
 
+# fungsi untuk mendapatkan node dengan ID tertentu
+# dari node yang telah di cek/kunjungi
 def findNode(simpulChecked, nodeID):
     for node in simpulChecked:
         if node["id"] == nodeID:
             return node
 
+# fungsi untuk mendapatkan seluruh node 
+# dari matrix awal ke matrix akhir (Goal State)
 def getFinalPath(simpulChecked, finalNodeID):
     node = findNode(simpulChecked, finalNodeID)
     temp = []

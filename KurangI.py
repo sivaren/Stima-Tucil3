@@ -1,3 +1,4 @@
+# fungsi untuk menghitung hasil dari kurang(i)
 def kurang_i(i, puzzle):
     i_position = puzzle.index(i)
     sum = 0
@@ -7,6 +8,7 @@ def kurang_i(i, puzzle):
     
     return sum
 
+# fungsi untuk menampung seluruh hasil dari fungsi kurang(i)
 def kurang_i_table(puzzle):
     tempArr = [0 for i in range(len(puzzle))]
     for i in range(len(puzzle)):
@@ -15,6 +17,7 @@ def kurang_i_table(puzzle):
 
     return tempArr
 
+# fungsi untuk mendapatkan jumlah dari seluruh hasil fungsi kurang(i)
 def sumOf_kurang_i(table):
     sum = 0
     for i in range(len(table)):
@@ -22,6 +25,7 @@ def sumOf_kurang_i(table):
     
     return sum
 
+# fungsi untuk mendapatkan nilai Sigma Kurang(i) + X
 def kurangI_plusX(puzzle, kurang_i_sum):
     blankPos = puzzle.index(16) + 1
     tempVal = kurang_i_sum

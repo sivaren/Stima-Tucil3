@@ -4,7 +4,9 @@ from InputOutput import *
 from Dependencies import *
 from KurangI import *
 
+# countID untuk menghitung jumlah node yang telah di bangkitkan
 countID = 1
+# fungsi untuk membangkitkan simpul
 def riseNode(node):
     global countID
 
@@ -19,60 +21,62 @@ def riseNode(node):
 
     return (simpulHidup)
 
-print("==== PILIH METODE INPUT 15 PUZZLE ====")
+# input angka untuk memilih metode input 15 puzzle
+print("\n==== PILIH METODE INPUT 15 PUZZLE ====")
 print("> 1. Input dari Console")
 print("> 2. Input dari File")
 print("> 3. Input dari Random Generate")
-print()
+print("======================================\n")
 
 print("=== MASUKKAN COMMAND ===")
-inputMethod = int(input("> "))
-print()
+inputMethod = input("> ")
+print("========================\n")
 
+# validasi input
+while(inputMethod not in [1,2,3,'1','2','3']):
+    print("=== MASUKKAN TIDAK VALID! ===")
+    print("> PILIH ANGKA 1/2/3!")
+    print("=============================\n")
+
+    print("=== MASUKKAN COMMAND ===")
+    inputMethod = input("> ")
+    print("========================\n")
+
+# inisialisasi puzzle sebagai array
 initialPuzzleArray = []
-if (inputMethod == 1):
+if (int(inputMethod) == 1):
     initialPuzzleArray = inputFromConsole()
-elif (inputMethod == 2):
+elif (int(inputMethod) == 2):
     initialPuzzleArray = inputFromFile()
-elif (inputMethod == 3):
+elif (int(inputMethod) == 3):
     initialPuzzleArray = inputRandomGenerate()
-else:
-    print("Error message!")
 
-# initialPuzzleArray = [
-#         # solve 
-#         # 1,2,3,4,5,6,16,8,9,10,7,11,13,14,15,12
-#         # unsolved
-#         1,3,4,15,2,16,5,12,7,6,11,14,8,9,10,13
-        
-#         # 
-#         # 12,6,1,7,13,10,8,16,4,9,5,15,2,14,3,11    
-#         # 13,2,6,11,12,1,4,10,15,7,3,16,8,14,5,9
-#         # 6,5,2,4,9,1,3,8,10,16,7,15,13,14,12,11
-#         # 1,6,2,4,5,16,3,8,9,7,15,11,13,14,10,12
-#         # 5,1,3,4,9,2,7,8,16,6,15,11,13,10,14,12
-#     ]
+timeTakes = 0.0         # inisialisasi waktu eksekusi
+startTime = time.time() # waktu dimulai
 
-timeTakes = 0.0
-
-startTime = time.time()
+# beberapa operasi terkait fungsi Kurang(i)
 kurangI_table = kurang_i_table(initialPuzzleArray)
 kurangI_sum =  sumOf_kurang_i(kurangI_table)
 kurangI_plus_x = kurangI_plusX(initialPuzzleArray, kurangI_sum)
 
-timeTakes += (time.time() - startTime)
+timeTakes += (time.time() - startTime)  # menambahkan waktu eksekusi program
 
 print("=== INITIAL MATRIX PUZZLE ===")
 printMatrix(transposeToMatrix(initialPuzzleArray))
+print("=============================\n")
 
 print("=== KURANG(i) TABLE ===")
 printKurangITable(kurangI_table)
+print("=======================\n")
 
-print("====== KURANG(i) + X ======")
-print(f"> Sum Of Kurang(i) + X = {kurangI_plus_x}\n")
+print("=== SIGMA KURANG(i) + X ===")
+print(f"> Sigma Kurang(i) + X = {kurangI_plus_x}")
+print("===========================\n")
 
 if (kurangI_plus_x % 2 == 0):
-    startTime = time.time()
+    startTime = time.time()     # waktu kembali dimulai
+
+    # inisialisasi node awal puzzle
     initialPuzzle = {
         "id"        : 1,
         "idBefore"  : 0,
@@ -82,38 +86,48 @@ if (kurangI_plus_x % 2 == 0):
         "cost"      : 0,
         "lastMove"  : -1
     } 
+
+    # inisialisasi simpulExpand, simpulChecked, pathSimpulFinal, dan simpulHidup
     simpulE = {}
     simpulChecked = []
     pathSimpulFinal = []
     simpulH = [initialPuzzle]
-    # found = False
     
     while(len(simpulH) != 0):
         simpulE = simpulH.pop(0)
         simpulChecked.append(simpulE)
+
+        # jika matrix sudah sesuai dengan goal, maka keluar dari loop
         if(isMatrixGoal(simpulE["matrix"])):
             simpulE["cost"] = simpulE["fi"]
             pathSimpulFinal = getFinalPath(simpulChecked, simpulE["id"])
-            # found = True
-            timeTakes += (time.time() - startTime)
+            timeTakes += (time.time() - startTime)  # menambahkan waktu eksekusi program
             break
+
+        # membangkitkan simpul dari simpul terkini
         risedNode = riseNode(simpulE)
         for node in risedNode:
             simpulH.append(node)
+        # mengurutkan simpulHidup berdasarkan cost
         simpulH = sortSimpulHidup(simpulH)
 
     print("=== PATH SIMPUL FINAL ===")
     printPathSimpulFinal(pathSimpulFinal)
+    print("=========================\n")
 
     print("================== WAKTU EKSEKUSI PROGRAM ==================")
-    print(f"> Program berlangsung selama {format(timeTakes, '.23f')} detik\n")
+    print(f"> Program berlangsung selama {format(timeTakes, '.23f')} detik")
+    print("============================================================\n")
 
-    print("=== JUMLAH SIMPUL DIBANGKITKAN ===")
+    print("==== JUMLAH SIMPUL DIBANGKITKAN ====")
     print(f"> Banyak simpul dibangkitkan = {len(simpulChecked) + len(simpulH)}")
-    print()
+    print("====================================\n")
 else:
-    print("===== POSSIBLE FOUND STATUS =====")
-    print("> Puzzle tidak dapat dipecahkan!\n")
+    print("============== POSSIBLE FOUND STATUS =============")
+    print("> Puzzle tidak dapat dipecahkan!")
+    print("> Dikarenakan Sigma Kurang(i) + X bernilai GANJIL")
+    print("==================================================\n")
 
     print("================== WAKTU EKSEKUSI PROGRAM ===================")
-    print(f"> Program berlangsung selama {format(timeTakes, '.23f')} detik\n")
+    print(f"> Program berlangsung selama {format(timeTakes, '.23f')} detik")
+    print("=============================================================\n")
