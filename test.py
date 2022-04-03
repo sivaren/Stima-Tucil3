@@ -1,5 +1,4 @@
-import numpy as np
-from Kurang_i import printMatrix
+# from Kurang_i import printMatrix
 
 # dict = {
 #     "id" : 1,
@@ -13,22 +12,22 @@ from Kurang_i import printMatrix
 #     "lastMove" : 12
 # }
 
-dict = [
-    1,
-    [
-        [1,2,3,4],
-        [4,5,6,1],
-        [4,5,6,1],
-        [4,5,6,1],
-    ],
-    100,
-    12
-]
+# dict = [
+#     1,
+#     [
+#         [1,2,3,4],
+#         [4,5,6,1],
+#         [4,5,6,1],
+#         [4,5,6,1],
+#     ],
+#     100,
+#     12
+# ]
 
-temp = [
-        [1,2,3],
-        [4,5,16],
-    ]
+# temp = [
+#         [1,2,3],
+#         [4,5,16],
+#     ]
 
 # print(dict)
 # print(dict["id"])
@@ -42,19 +41,19 @@ temp = [
 # if (dict["matrix"]==temp):
 #     print("matrix sama")
 
-initialPuzzle = {
-    "id" : 1,
-    "matrix" : [
-        [1,2,3,4],
-        [5,6,16,8],
-        [9,10,7,11],
-        [13,14,15,12]
-    ],
-    "fi" : 0,
-    "gi" : 0,
-    "cost" : 0,
-    "lastMove" : -1
-}
+# initialPuzzle = {
+#     "id" : 1,
+#     "matrix" : [
+#         [1,2,3,4],
+#         [5,6,16,8],
+#         [9,10,7,11],
+#         [13,14,15,12]
+#     ],
+#     "fi" : 0,
+#     "gi" : 0,
+#     "cost" : 0,
+#     "lastMove" : -1
+# }
 
 # initialPuzzle = [
 #     1,
@@ -76,6 +75,7 @@ def getEmptyPosition(matrix):
             if (matrix[i][j] == 16):
                 return [i, j]
 
+# balikin array yg berisi direction move yang dapat di lakukan
 def availableMove(node):
     emptyPosition = getEmptyPosition(node["matrix"])
     availMove = []
@@ -159,28 +159,28 @@ def calculate_gi(matrix):
 # print(initialPuzzle["matrix"])
 # print(copyMatrix(initialPuzzle["matrix"]))
 
-printMatrix(initialPuzzle["matrix"])
+# printMatrix(initialPuzzle["matrix"])
 # print(initialPuzzle)
-newNodeUp = move(initialPuzzle, 0, 2)
-newNodeUp["gi"] = calculate_gi(newNodeUp["matrix"])
-newNodeUp["cost"] = newNodeUp["fi"] + newNodeUp["gi"]
-newNodeRight = move(initialPuzzle, 1, 2)
-newNodeRight["gi"] = calculate_gi(newNodeRight["matrix"])
-newNodeRight["cost"] = newNodeRight["fi"] + newNodeRight["gi"]
-newNodeDown = move(initialPuzzle, 2, 2)
-newNodeDown["gi"] = calculate_gi(newNodeDown["matrix"])
-newNodeDown["cost"] = newNodeDown["fi"] + newNodeDown["gi"]
-newNodeLeft = move(initialPuzzle, 3, 2)
-newNodeLeft["gi"] = calculate_gi(newNodeLeft["matrix"])
-newNodeLeft["cost"] = newNodeLeft["fi"] + newNodeLeft["gi"]
-printMatrix(newNodeUp["matrix"])
-print(newNodeUp)
-printMatrix(newNodeRight["matrix"])
-print(newNodeRight)
-printMatrix(newNodeDown["matrix"])
-print(newNodeDown)
-printMatrix(newNodeLeft["matrix"])
-print(newNodeLeft)
+# newNodeUp = move(initialPuzzle, 0, 2)
+# newNodeUp["gi"] = calculate_gi(newNodeUp["matrix"])
+# newNodeUp["cost"] = newNodeUp["fi"] + newNodeUp["gi"]
+# newNodeRight = move(initialPuzzle, 1, 2)
+# newNodeRight["gi"] = calculate_gi(newNodeRight["matrix"])
+# newNodeRight["cost"] = newNodeRight["fi"] + newNodeRight["gi"]
+# newNodeDown = move(initialPuzzle, 2, 2)
+# newNodeDown["gi"] = calculate_gi(newNodeDown["matrix"])
+# newNodeDown["cost"] = newNodeDown["fi"] + newNodeDown["gi"]
+# newNodeLeft = move(initialPuzzle, 3, 2)
+# newNodeLeft["gi"] = calculate_gi(newNodeLeft["matrix"])
+# newNodeLeft["cost"] = newNodeLeft["fi"] + newNodeLeft["gi"]
+# printMatrix(newNodeUp["matrix"])
+# print(newNodeUp)
+# printMatrix(newNodeRight["matrix"])
+# print(newNodeRight)
+# printMatrix(newNodeDown["matrix"])
+# print(newNodeDown)
+# printMatrix(newNodeLeft["matrix"])
+# print(newNodeLeft)
 
 # print(getEmptyPosition(initialPuzzle["matrix"]))
 # availMove = availableMove(initialPuzzle)
