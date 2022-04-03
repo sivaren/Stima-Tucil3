@@ -52,6 +52,13 @@ def transposeToMatrix(array):
             baris = []
     return matrix
 
+def transposeToArray(matrix):
+    array = []
+    for row in matrix:
+        for col in row:
+            array.append(col)
+    return array
+
 def printMatrix(matrix):
     for i in range(len(matrix)):
         print("> ", end="")
