@@ -1,8 +1,8 @@
-import numpy as np
 import time
-from Kurang_i import *
-from test import *
-from test2 import *
+
+from InputOutput import *
+from Dependencies import *
+from KurangI import *
 
 countID = 1
 def riseNode(node):
@@ -19,33 +19,26 @@ def riseNode(node):
 
     return (simpulHidup)
 
-# TESTING INPUT FROM CONSOLE
-arrTemp = []
-# for i in range(4): 
-#     # '2 4 5 6'
-#     line = input()
-#     for num in line.split():
-#         arrTemp.append(int(num))
+print("==== PILIH METODE INPUT 15 PUZZLE ====")
+print("> 1. Input dari Console")
+print("> 2. Input dari File")
+print("> 3. Input dari Random Generate")
+print()
 
-# TESTING INPUT FROM FILE
-namaFile = input("Nama file: ")
-with open("./testCase/" + namaFile) as f:
-    lines = f.readlines()
-for line in lines: 
-    for num in line.split():
-        arrTemp.append(int(num))
+print("=== MASUKKAN COMMAND ===")
+inputMethod = int(input("> "))
+print()
 
-# TESTING INPUT FROM RANDOM GENERATION
-def generateRandomMatrix():
-    matrix = np.arange(1, 17)
-    np.random.shuffle(matrix)
+initialPuzzleArray = []
+if (inputMethod == 1):
+    initialPuzzleArray = inputFromConsole()
+elif (inputMethod == 2):
+    initialPuzzleArray = inputFromFile()
+elif (inputMethod == 3):
+    initialPuzzleArray = inputRandomGenerate()
+else:
+    print("Error message!")
 
-    matrix = np.reshape(matrix, (4,4))
-    return matrix.tolist()
-
-# arrTemp = transposeToArray(generateRandomMatrix())
-
-initialPuzzleArray = arrTemp
 # initialPuzzleArray = [
 #         # solve 
 #         # 1,2,3,4,5,6,16,8,9,10,7,11,13,14,15,12
@@ -115,7 +108,7 @@ if (kurangI_plus_x % 2 == 0):
     printPathSimpulFinal(simpulChecked)
 
     print("================== WAKTU EKSEKUSI PROGRAM ==================")
-    print(f"> Program berlangsung selama {timeTakes} detik\n")
+    print(f"> Program berlangsung selama {format(timeTakes, '.23f')} detik\n")
 
     print("=== JUMLAH SIMPUL DIBANGKITKAN ===")
     print(f"> Banyak simpul dibangkitkan = {len(simpulChecked) + len(simpulH)}")
