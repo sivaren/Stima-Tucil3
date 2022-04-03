@@ -1,52 +1,188 @@
-finalPuzzle = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+import numpy as np
+from Kurang_i import printMatrix
 
-puzzle = [1,3,4,15,2,16,5,12,7,6,11,14,8,9,10,13]
-# puzzle = [1,2,3,4,5,6,16,8,9,10,7,11,13,14,15,12]
+# dict = {
+#     "id" : 1,
+#     "matrix" : [
+#         [1,2,3,4],
+#         [4,5,6,1],
+#         [4,5,6,1],
+#         [4,5,6,1],
+#     ],
+#     "cost" : 100,
+#     "lastMove" : 12
+# }
 
-def kurang_i(i, puzzle):
-    i_position = puzzle.index(i)
-    sum = 0
-    for pos in range(i_position + 1, len(puzzle)):
-        if(puzzle[pos] < i):
-            sum += 1
-    return sum
+dict = [
+    1,
+    [
+        [1,2,3,4],
+        [4,5,6,1],
+        [4,5,6,1],
+        [4,5,6,1],
+    ],
+    100,
+    12
+]
 
-def kurang_i_table(puzzle):
-    tempArr = [0 for i in range(len(puzzle))]
-    for i in range(len(puzzle)):
-        kurangIResult = kurang_i(puzzle[i], puzzle)
-        tempArr[puzzle[i]-1] = kurangIResult
-    return tempArr
+temp = [
+        [1,2,3],
+        [4,5,16],
+    ]
 
-def sumOf_kurang_i(table):
-    sum = 0
-    for i in range(len(table)):
-        sum += table[i]
-    return sum
+# print(dict)
+# print(dict["id"])
+# print(dict["matrix"])
+# print(dict["cost"])
+# print(dict["lastMove"])
 
-def possibleToSolve(puzzle, kurang_i_sum):
-    blankPos = puzzle.index(16) + 1
-    tempVal = kurang_i_sum
-    tempArr = [2,4,5,7,10,12,13,15]
-    if (blankPos in tempArr):
-        tempVal += 1
-    return (tempVal % 2 == 0)
+# if (dict["cost"]==100):
+#     print("hello")
 
-def printKurangITable(array):
-    print("Kurang(i) Table")
-    for i in range(len(array)):
-        print(f"Kurang({i+1}) = {array[i]}")
-    print()
+# if (dict["matrix"]==temp):
+#     print("matrix sama")
 
-kurangI_table = kurang_i_table(puzzle)
-kurang_i_sum = sumOf_kurang_i(kurangI_table)
+initialPuzzle = {
+    "id" : 1,
+    "matrix" : [
+        [1,2,3,4],
+        [5,6,16,8],
+        [9,10,7,11],
+        [13,14,15,12]
+    ],
+    "fi" : 0,
+    "gi" : 0,
+    "cost" : 0,
+    "lastMove" : -1
+}
 
-print(f"Sum of Kurang(i): {kurang_i_sum}\n")
-printKurangITable(kurangI_table)
+# initialPuzzle = [
+#     1,
+#     [
+#         [4,2,6,3],
+#         [5,16,7,8],
+#         [9,10,11,12],
+#         [1,14,15,13]
+#     ],
+#     0,
+#     0,
+#     0,
+#     -1
+# ]
 
-isSolved = possibleToSolve(puzzle, kurang_i_sum)
+def getEmptyPosition(matrix):
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if (matrix[i][j] == 16):
+                return [i, j]
 
-if(isSolved):
-    print("Bisa di solved!")
-else:
-    print("Gabisa di solved!")
+def availableMove(node):
+    emptyPosition = getEmptyPosition(node["matrix"])
+    availMove = []
+    # cek move up
+    if ((emptyPosition[0] - 1 >= 0) and node["lastMove"] != 2):
+        availMove.append(0)
+    # cek move right
+    if ((emptyPosition[1] + 1 <= 3) and node["lastMove"] != 3):
+        availMove.append(1)
+    # cek move down
+    if ((emptyPosition[0] + 1 <= 3) and node["lastMove"] != 0):
+        availMove.append(2)
+    # cek move left
+    if ((emptyPosition[1] - 1 >= 0) and node["lastMove"] != 1):
+        availMove.append(3)
+    return availMove
+
+def copyMatrix(matrix):
+    temp = []
+    baris = []
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            baris.append(matrix[i][j])
+            if (j == len(matrix[i]) - 1):
+                temp.append(baris)
+                baris = []
+    return temp
+
+def move(node, direction, countID):
+    newNode = {}
+    newNode["id"] = countID
+    newNode["matrix"] = []
+    newNode["fi"] = node["fi"] + 1
+    newNode["gi"] = 0
+    newNode["cost"] = node["fi"] + 1
+    newMatrix = copyMatrix(node["matrix"])
+    emptyPosition = getEmptyPosition(node["matrix"])
+    if (direction == 0):
+        newMatrix[emptyPosition[0]][emptyPosition[1]] = node["matrix"][emptyPosition[0] - 1][emptyPosition[1]] 
+        newMatrix[emptyPosition[0] - 1][emptyPosition[1]] = 16
+        newNode["lastMove"] = 0
+    elif (direction == 1):
+        newMatrix[emptyPosition[0]][emptyPosition[1]] = node["matrix"][emptyPosition[0]][emptyPosition[1] + 1] 
+        newMatrix[emptyPosition[0]][emptyPosition[1] + 1] = 16
+        newNode["lastMove"] = 1
+    elif (direction == 2):
+        newMatrix[emptyPosition[0]][emptyPosition[1]] = node["matrix"][emptyPosition[0] + 1][emptyPosition[1]] 
+        newMatrix[emptyPosition[0] + 1][emptyPosition[1]] = 16
+        newNode["lastMove"] = 2
+    else:
+        newMatrix[emptyPosition[0]][emptyPosition[1]] = node["matrix"][emptyPosition[0]][emptyPosition[1] - 1] 
+        newMatrix[emptyPosition[0]][emptyPosition[1] - 1] = 16
+        newNode["lastMove"] = 3
+    newNode["matrix"] = newMatrix
+    return newNode
+
+def calculate_gi(matrix):
+    count = 0
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if(matrix[i][j] != ((i * 4) + j + 1) and matrix[i][j] != 16):
+                count += 1
+    return count
+
+# def move(node, direction, countID):
+#     temp = []
+#     temp.append(countID)
+#     temp.append([])
+#     temp.append(node[2] + 1)
+#     temp.append(0)
+#     temp.append(node[2] + 1)
+#     temp[1] = copyMatrix(node[1])
+#     emptyPosition = getEmptyPosition(temp[1])
+#     if (direction == 0):
+#         temp[1][emptyPosition[0]][emptyPosition[1]] = 6
+#         temp[1][emptyPosition[0] - 1][emptyPosition[1]] = 16
+#         temp.append(0)
+#     # newNode[1] = newMatrix
+#     return temp
+
+# print(initialPuzzle["matrix"])
+# print(copyMatrix(initialPuzzle["matrix"]))
+
+printMatrix(initialPuzzle["matrix"])
+# print(initialPuzzle)
+newNodeUp = move(initialPuzzle, 0, 2)
+newNodeUp["gi"] = calculate_gi(newNodeUp["matrix"])
+newNodeUp["cost"] = newNodeUp["fi"] + newNodeUp["gi"]
+newNodeRight = move(initialPuzzle, 1, 2)
+newNodeRight["gi"] = calculate_gi(newNodeRight["matrix"])
+newNodeRight["cost"] = newNodeRight["fi"] + newNodeRight["gi"]
+newNodeDown = move(initialPuzzle, 2, 2)
+newNodeDown["gi"] = calculate_gi(newNodeDown["matrix"])
+newNodeDown["cost"] = newNodeDown["fi"] + newNodeDown["gi"]
+newNodeLeft = move(initialPuzzle, 3, 2)
+newNodeLeft["gi"] = calculate_gi(newNodeLeft["matrix"])
+newNodeLeft["cost"] = newNodeLeft["fi"] + newNodeLeft["gi"]
+printMatrix(newNodeUp["matrix"])
+print(newNodeUp)
+printMatrix(newNodeRight["matrix"])
+print(newNodeRight)
+printMatrix(newNodeDown["matrix"])
+print(newNodeDown)
+printMatrix(newNodeLeft["matrix"])
+print(newNodeLeft)
+
+# print(getEmptyPosition(initialPuzzle["matrix"]))
+# availMove = availableMove(initialPuzzle)
+# print(availMove)
+# print(initialPuzzle)
