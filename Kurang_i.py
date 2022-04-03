@@ -24,18 +24,22 @@ def sumOf_kurang_i(table):
         sum += table[i]
     return sum
 
-def possibleToSolve(puzzle, kurang_i_sum):
+def kurangI_plusX(puzzle, kurang_i_sum):
     blankPos = puzzle.index(16) + 1
     tempVal = kurang_i_sum
     tempArr = [2,4,5,7,10,12,13,15]
     if (blankPos in tempArr):
         tempVal += 1
-    return (tempVal % 2 == 0)
+    return tempVal
 
 def printKurangITable(array):
-    print("Kurang(i) Table")
+    # print("=== KURANG(i) TABLE ===")
     for i in range(len(array)):
-        print(f"Kurang({i+1}) = {array[i]}")
+        if(i < 9):
+            print(f"> Kurang({i+1})  = {array[i]}")
+        else:
+            print(f"> Kurang({i+1}) = {array[i]}")
+
     print()
 
 def transposeToMatrix(array):
@@ -50,6 +54,7 @@ def transposeToMatrix(array):
 
 def printMatrix(matrix):
     for i in range(len(matrix)):
+        print("> ", end="")
         for j in range(len(matrix[i])):
             if(matrix[i][j] / 10 < 1):
                 print(f"{matrix[i][j]} ", end=" ")
